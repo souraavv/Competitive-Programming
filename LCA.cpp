@@ -64,3 +64,9 @@ int main(){
     cout<<lca(10,3);
     
 }
+
+/*
+
+Problem list: https://www.codechef.com/LTIME77A/problems/DDQUERY
+
+*/
