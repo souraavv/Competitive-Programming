@@ -72,7 +72,7 @@ void dfs1(int u,int par){
 int dfs2(int u,int par){
     for(auto v: g[u])
         if(v!=par and sub[v]>nn/2)
-            return dfs(v,u);
+            return dfs2(v,u);
     return u;
 }
 
