@@ -29,17 +29,19 @@ class BIT {
             }
             
         }
-        
+        // prefix_sum
         int query(int idx){
             int sum=0;
             for(++idx;idx>0;idx-=idx&-idx)sum+=bit[idx];
             return sum;
         }
         
-        void update(int idx,int val){
+        // add x to index i
+        void add(int idx,int val){
             for(++idx;idx<=n;idx+=idx & -idx)bit[idx]+=val;
         }
         
+        // [i,j] inclusive
         int rangeQuery(int i,int j){
             if(i==0)return query(j);
             return (query(j)-query(i-1));
@@ -58,6 +60,8 @@ int main(){
     
     BIT b(a);
     
-    cout<<b.rangeQuery(4,13);
+    cout<<b.rangeQuery(4,13)<<"\n";
+    b.add(13,3);
+    cout<<b.rangeQuery(4,13)<<"\n";
     
 }
