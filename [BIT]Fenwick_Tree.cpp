@@ -8,23 +8,20 @@ int n;
 
 
 void add(int idx,int val){
-    while(idx<=n){
-        bit[idx]+=val;
-        idx+=idx & -idx;
-    }
+    for(++idx;idx<=n;idx+=idx & -idx)
+	    bit[idx]+=val;
 }
 
 int query(int idx){
     int sum=0;
-    while(idx){
-        sum+=bit[idx];
-        idx-=idx & -idx;
-    }
+    for(++idx;idx>0;idx-=idx & -idx)
+	    sum+=bit[idx];
     return sum;
 }
 
-int range_query(int idx1,int idx2){
-	return (query(idx1)-query(idx2-1));	
+int range_query(int i,int j){
+	if(i==0)return query(j);
+	else return query(j)-query(i-1);
 }
 
 int main(){
