@@ -69,6 +69,7 @@
                                                             odd -> .... -> odd
                              
     
+    Good Problem: https://www.codechef.com/problems/ENGXOR
     
     
 */
