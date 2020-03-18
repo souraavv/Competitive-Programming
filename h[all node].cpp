@@ -52,3 +52,6 @@ int main(){
     }
     
 }
+
+
+// Good Problem Div3. Problem F : https://codeforces.com/contest/1324/problem/F
