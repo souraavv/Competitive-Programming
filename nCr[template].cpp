@@ -64,4 +64,4 @@ for(int i=1;i<range; ++i)
   
 // nCr:  n!/(n-r)!*(r)!
 
-cout<< multiply(fact[n],multiply(modinv(fact[n-r],modinv(fact[r]));
+cout<< multiply(fact[n],multiply(modinv(fact[n-r]),modinv(fact[r])));
