@@ -25,7 +25,7 @@ void dfs(int u,int par){
     lvl[u]=lvl[par]+1;
     
     for(int i=1;i<=20;++i)
-        if(dp[u][i-1])
+        if(dp[u][i-1]!=-1)
             dp[u][i]=dp[dp[u][i-1]][i-1];
     
     for(int v: g[u]){
