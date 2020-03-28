@@ -119,4 +119,3 @@ int main(){
 }
 
 // Problem: https://codeforces.com/contest/339/problem/D
-// Solution: https://codeforces.com/contest/339/submission/63051798
