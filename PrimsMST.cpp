@@ -8,8 +8,6 @@ bool vis[N];
 int dist[N],parent[N];
 
 int primsMST(int source){
-    
-   
     for(int i=1;i<=n;++i)
         dist[i]=1e18;
         
