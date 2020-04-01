@@ -1,26 +1,18 @@
 #include<bits/stdc++.h>
 using namespace std;
 
+const int N=1e6+10;
 
-int main(){
-    int n;
-    cin>>n;
-    vector<bool>is_prime(n+1,true);
-    is_prime[0]=is_prime[1]=false;
+vector<bool> prime(N+1,0);
+
+void seive(){
+
+    prime[0]=prime[1]=0;
     
-    for(int i=4;i<=n;i+=2)
-            is_prime[i]=false;
-    
-    for(int i=3;i*i<=n;++i){
-        if(is_prime[i]){
-            for(int j=i*i;j<=n;j+=i)
-                is_prime[j]=false;
+    for(int i=2;i*i<=N;++i){
+        if(prime[i]){
+            for(int j=i*i;j<=N;j+=i)
+                prime[j]=0;
         }
-    }
-    // Asymptotic complexity-- O(nlog(log(n))) = N/2 + N/3 + N/5 + N/7 + .... 
-    // though because we are going till root n-- complexity will be O(n)+O(n ln ln (sqrt(n)))
-    
-    for(int i=1;i<=n;++i)if(is_prime[i])cout<<i<<", ";
-    
-    return 0;
+    } 
 }
