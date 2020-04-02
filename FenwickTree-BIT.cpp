@@ -19,7 +19,8 @@ class BIT {
             bit = vector<int>(n+1,0);
             // O(n) filling of BIT
             // copy(a.begin(),a.end(),bit.begin()+1);
-            for(int i=0;i<a.size();++i)bit[i+1]=a[i];
+            for(int i=0;i<a.size();++i)
+                bit[i+1]=a[i];
             
             for(int idx=1;idx<=n;++idx){
                 int idx1 = idx+(idx & -idx);
@@ -32,18 +33,21 @@ class BIT {
         // prefix_sum
         int query(int idx){
             int sum=0;
-            for(++idx;idx>0;idx-=idx&-idx)sum+=bit[idx];
+            for(++idx;idx>0;idx-=idx&-idx)
+                 sum+=bit[idx];
             return sum;
         }
         
         // add x to index i
         void add(int idx,int val){
-            for(++idx;idx<=n;idx+=idx & -idx)bit[idx]+=val;
+            for(++idx;idx<=n;idx+=idx & -idx)
+                bit[idx]+=val;
         }
         
         // [i,j] inclusive
         int rangeQuery(int i,int j){
-            if(i==0)return query(j);
+            if(i==0)
+                return query(j);
             return (query(j)-query(i-1));
         }
         
@@ -56,7 +60,8 @@ int main(){
     
     cin>>n;
     vector<int> a(n);
-    for(int i=0;i<n;++i)cin>>a[i];
+    for(int i=0;i<n;++i)
+        cin>>a[i];
     
     BIT b(a);
     
