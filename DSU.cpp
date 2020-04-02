@@ -46,6 +46,5 @@ int32_t main()
 /*
 
 Problem: https://codeforces.com/contest/177/problem/C2
-Solution : https://codeforces.com/contest/177/submission/70535832
 
 */
