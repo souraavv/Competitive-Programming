@@ -11,20 +11,20 @@ using namespace std;
 #define pii pair<int, int>
 #define pb push_back
 
-const int N = 2e5 + 10;
+const int N = 5e5 + 10;
 const int mod = 1e9 + 7;
 
 vi g[N];
 int u, v;
 
-int dp[N][25];
+int dp[N][31];
 int lvl[N];
 
 void dfs(int u,int par){
     dp[u][0]=par;
     lvl[u]=lvl[par]+1;
     
-    for(int i=1;i<=20;++i)
+    for(int i=1;i<=30;++i)
         if(dp[u][i-1]!=-1)
             dp[u][i]=dp[dp[u][i-1]][i-1];
     
@@ -42,14 +42,14 @@ int lca(int u,int v){
     if(lvl[u]<lvl[v])
         swap(u,v);
     
-    for(int i=20;~i;--i)
+    for(int i=30;~i;--i)
         if(lvl[u]-(1<<i)>=lvl[v])
             u=dp[u][i];
     
     if(u==v)
         return u;
     
-    for(int i=20;~i;--i)
+    for(int i=30;~i;--i)
         if(dp[u][i]^dp[v][i])
             u=dp[u][i],v=dp[v][i];
         
