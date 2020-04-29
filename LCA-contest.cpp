@@ -20,38 +20,38 @@ int u, v;
 int dp[N][31];
 int lvl[N];
 
-void dfs(int u,int par){
-    dp[u][0]=par;
-    lvl[u]=lvl[par]+1;
+void dfs(int u, int par){
+    dp[u][0] = par;
+    lvl[u] = lvl[par] + 1;
     
-    for(int i=1;i<=30;++i)
-        if(dp[u][i-1]!=-1)
-            dp[u][i]=dp[dp[u][i-1]][i-1];
+    for(int i = 1; i <= 30; ++i)
+        if(dp[u][i-1] != -1)
+            dp[u][i] = dp[dp[u][i-1]][i-1];
     
     for(int v: g[u]){
-        if(v!=par){
-            dfs(v,u);
+        if(v != par){
+            dfs(v, u);
         }
     }
 }
 
 
 
-int lca(int u,int v){
+int lca(int u, int v){
     
-    if(lvl[u]<lvl[v])
-        swap(u,v);
+    if(lvl[u] < lvl[v])
+        swap(u, v);
     
-    for(int i=30;~i;--i)
-        if(lvl[u]-(1<<i)>=lvl[v])
-            u=dp[u][i];
+    for(int i = 30; ~i; --i)
+        if(lvl[u] - (1 << i) >= lvl[v])
+            u = dp[u][i];
     
-    if(u==v)
+    if(u == v)
         return u;
     
-    for(int i=30;~i;--i)
-        if(dp[u][i]^dp[v][i])
-            u=dp[u][i],v=dp[v][i];
+    for(int i = 30; ~i; --i)
+        if(dp[u][i] ^ dp[v][i])
+            u = dp[u][i],v = dp[v][i];
         
     return dp[u][0];
 }
@@ -64,18 +64,17 @@ int32_t main()
 
     
     int n;
-    cin>>n;
+    cin >> n;
     
-    for(int i=0;i+1<n;++i){
-        cin>>u>>v;
+    for(int i = 0; i + 1 < n; ++i){
+        cin >> u >> v;
         g[u].pb(v);
         g[v].pb(u);
     }
-    
-    
-    memset(dp,-1,sizeof(dp));
-    lvl[0]=-1;
-    dfs(1,0);
+   
+    memset(dp, -1, sizeof(dp));
+    lvl[0] = -1;
+    dfs(1, 0);
     
     /* ---------------write code below---------------------------- */
     
