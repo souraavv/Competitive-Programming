@@ -19,7 +19,7 @@ ll modpow(ll x, ll y){
         x = x % MOD;
         y >>= 1;
     }
-    return ans;
+    return ans % mod;
 }
  
 ll modinv(ll x){
@@ -42,6 +42,10 @@ ll multiply(int a,int b){
     return (a*b)%MOD;
 }
 
+ll nCr(int n, int r){
+    return multiply(fact[n],multiply(modinv(fact[n-r]),modinv(fact[r])));
+}
+
 ll modinv2(int a){
   int b=MOD,p=1,q=0;
   while(b){
@@ -55,13 +59,21 @@ ll modinv2(int a){
   return (p+MOD)%MOD;
 }
 
+void init(){
+    fact[0]=1;
+    for(int i = 1; i < N; ++i)
+        fact[i]=multiply(fact[i-1],i);
+}
 
-// inside main
-
-fact[0]=1;
-for(int i=1;i<range; ++i)
-  fact[i]=multiply(fact[i-1],i);
-  
-// nCr:  n!/(n-r)!*(r)!
-
-cout<< multiply(fact[n],multiply(modinv(fact[n-r]),modinv(fact[r])));
+int32_t main(){
+    
+    ios::sync_with_stdio(false):
+    cin.tie(0);
+    
+    init();
+    
+    // continue;
+    
+    
+    return 0;   
+}
