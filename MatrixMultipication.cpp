@@ -125,3 +125,6 @@ int32_t main(){
    }
    return 0;
 }
+
+
+// Problem link : https://www.codechef.com/problems/FXSEQ
