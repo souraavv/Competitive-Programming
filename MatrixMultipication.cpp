@@ -23,7 +23,7 @@ struct Matrix {
     for (int i = 0; i < n; ++i) for (int j = 0; j < m; ++j)
       x[i][j] = val;
   }
-  Matrix(const vector<vector<int>> &&mat) {
+  Matrix(const vector<vector<int>> &mat) {
     n = (int) mat.size();
     m = (int) mat[0].size();
     for (int i = 0; i < n; ++i) for (int j = 0; j < m; ++j)
