@@ -8,17 +8,14 @@ using namespace std;
 #define all(c) c.begin(),c.end()
 using ll = long long;
 const int MOD = 998244353, N = 1e5 + 10;
- 
-#ifdef HOME
-#include "/home/prateek2112/print.cpp"
-#else
-#define debug(...) 21
-#endif
+
 
 struct Matrix {
+  // SEe if you need to change this
   static const int MOD = 998244353;
   static const long long SQMOD = (long long) MOD * MOD;
   static int const N = 2;
+  // Change this also if require.
   using T = int;
   T x[N][N];
   int n, m;
@@ -100,46 +97,31 @@ struct Matrix {
 
 
 void test(){
-   int n,a,b,c,d,e,f;
-   cin >> n >> a >> b >> c >> d >> e >> f;
-   vector<int> XS = {c,d,c^d};
-   int xs = XS[n%3];
-   a %= MOD;
-   b %= MOD;
-   e %= MOD;
-   f %= MOD;
-   xs %= MOD;
-   if(n == 0){
-      cout << (a*xs+a-xs+MOD)%MOD << '\n';
-      return;
-   }
-   if(n == 1){
-      cout << (b*xs+b-xs+MOD)%MOD << '\n';
-      return;
-   }
-   Matrix A{{
-      {e,f},
-      {1,0}
-   }};
+  
+// Sample : 
+//    Matrix A{{
+//       {e,f},
+//       {1,0}
+//    }};
 
-   Matrix B{{
-      {b},
-      {a}
-   }};
+//    Matrix B{{
+//       {b},
+//       {a}
+//    }};
 
-   A ^= (n-1);
-   A *= B;
-   int mfs = A[0][0]%MOD;
-   int ans = (mfs*xs+mfs-xs+MOD)%MOD;
-   cout << ans << '\n';
+//    A ^= (n-1);
+//    A *= B;
+ 
    return;
 }
 
 int32_t main(){
    ios::sync_with_stdio(false);
    cin.tie(NULL);
-   int tt = 1;
-   cin >> tt;
-   f(i,0,tt) test();   
+   int t = 1;
+   // cin >> t;
+   while(t--){
+     test();
+   }
    return 0;
 }
