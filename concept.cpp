@@ -96,3 +96,52 @@
     }
         
 
+/*                       Given an array find pair of number (a, b) such that the gcd(a, b) is max of all possible pair      
+
+    Constraint on N = 1e5
+    
+    Idea : Using the basic of Seive.
+    We know the ans can have range = [1, max_element(a) ]
+    So thus we will iterate from the max_element(a) to 1 and 
+    maintain a count array which count the no. of time it has been come as a common factor.
+    So initially all element are there gcd and thus count[a[i]] for each 0 <= i < n is equal to 1.
+    
+    And then as we are iterating from the max to 1, once we find some one if it's count is 2 then we immediately return ans.
+
+*/
+    
+    // Code
+    
+    const int N = 1e6 + 10;
+    vi a;
+
+    int findMaxGcd() {
+        int mx = *max_element(all(a));
+        for(int i = mx; i >= 1; --i) {
+            int j = i;
+            int tempCounter = 0; // Used to check whether i itself is factor of two number's from the array a, in that case ans is i.
+            for(int j = i; j <= mx; j += i) {
+                if(count[j] >= 2)
+                    return j;
+                else if(count[i] == 1) // This condition will work only for those which are present in array a, i.e count[a[i]] = 1
+                    tempCounter++;
+            
+                if(tempCounter == 2)
+                    return i;
+            }
+        }
+    }
+
+    int main() {
+        int n;
+        a = vi(n);
+        for(int &i: a)
+            cin >> i;
+        cout << findMaxGcd();
+        return 0;
+    }
+
+
+
+        
+
