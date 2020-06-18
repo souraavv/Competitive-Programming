@@ -14,10 +14,8 @@
                                         
     This is little Fermat's Theorem : a ^ ( M - 1 ) == 1 mod M.
                                     
-                                    Let's see how to apply it to make 
-                                    y ^ z a smaller value, that's why we
-                                   intentionally take the factor a * (M - 1) 
-                                   because computing this is equivalent to 
+                                   Let's see how to apply it to make y ^ z a smaller value, that's why we
+                                   intentionally taking the factor i.e a * (M - 1) because computing this is equivalent to 
                                    computing nothing as it is 1 mod M.
                                    
     So if we write y ^ z = ans, then ans =  a * (M - 1) + b ; where a is q, b is rem.
