@@ -50,3 +50,49 @@
      
      cout << finalAns;
      
+
+
+/*                                           Find all the divisor of a number  - BASIC                                                      
+
+        We will find the smallest prime factor of a number and then to handle each query we can ans in O(log n) time.
+        To find SPF we will use seive.
+        
+*/
+
+    // code
+    
+    const int N = 1e6 + 10;
+    int spf[N];
+
+    void seive() {
+        // Initial setup
+        for(int i = 1; i < N; ++i) {
+            spf[i] = i;
+        }
+        for(int i = 2; i * i < N; ++i) {
+            if(spf[i] == i) {
+                for(int j = i * i; j < N; j += i) {
+                    if(spf[j] == j) // If none have modified then i is the smallest spf of j
+                        spf[j] = i;
+                }
+            }
+        }
+    }
+    
+    vector<int> prime_factorization(int x) {
+        vi store;
+        while(x != 1) {
+            store.push_back(spf[x]);
+            x /= spf[x];
+        }
+        return store;
+    }
+
+    int main() {
+        seive();
+        int x;
+        cin >> x;
+        vi store = prime_factorization(x);
+    }
+        
+
