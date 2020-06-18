@@ -143,5 +143,132 @@
 
 
 
+/*                                        Find the sum of divisor of number <= n  
+        
+        If we do this naively then to find ans of each i <= n we will take O(sqrt(n)) time to find the sum of it's divisor
+        and in total O(n sqrt(n)) , But what if N <= 1e12. Then this solution will exceed the time limit.
+        
+        Let's think more clever solution.
+        
+        Instead of finding the divisor of each number 1 <= i <= n, we will find how many times a number comes as divisor.
+        So integer i comes in i * 1, i * 2, i * 3, ... 
+                                                            which is equal to = i * floor(n / i);
+        
+        So ans is simply = for(int i = 1; i <= n; ++i)
+                                ans += i * floor(n / i);
+        Again this is O(n) and won't pass time limit.
+        
+        Can we do something more better ... ?
+        Loot at the floor(n / i) how many distinct value it can have ?
+            To count easily consider two cases 
+                   1). i <= sqrt(n) ; then floor(n / i) will have sqrt(n) different ans ( only integers) .
+                   2). i > sqrt(n)  ; this is equivalent to n / i < sqrt(n) or equivalently floor(n / i) < sqrt(n)
+                                      and this can also have sqrt(n) different values.
+            So in total at most this expression floor(n / i) can have 2sqrt(n) = O(sqrt(n)) different values.
+            
+        How this statement can help us ?
+        for each distinct sqrt(n) values if I know in which range it is same then we can break our original sequence (1 to n)
+        into sqrt(n) sequence [why sqrt(n) ? because only this much unique value) ](Li, Ri) where each element in range Li, Ri 
+        will have same n / i value. And now for this range computing sum is is not like 
+                for(int i = l; i <= r; ++i)
+                    ans += i * floor(n / i);
+                
+                    But instead
+                
+                sum += (l, l + 1, l + 2, ..., r) * floor(n / i);
+        Finding sum from l to r which is a simple sequence is easy.
+        Since each element in the range (l, r) have same floor(n / i) value.
+        
+        Ok now question might be how to find these sequence fast.
+        2 ways : Binary Search [ O(log(n)) ], or some simple math [O(1)] (just one division)
+        
+        One thing we know l1 = 1 (As 1st segment start from 1), Now we have to find r1?
+        
+        one thing we know floor(n / l1) == floor(n / r1)
+                                    or 
+                           n / r1 >= floor(n / l1) 
+                           r1 / n < 1 / floor(n / l1))
+                           r1 < n / floor(n / l1))
+                           or 
+                           r1 = floor(n / floor(n / l1));
+                           
+                           So in simple r1 = n / n / l;
+         And now we know what is l2 = r1 + 1 ; In general l(i + 1) = r(i) + 1;
+         
+         
+         Example: 
+          N = 16;
+          let's see what are values of N / i for all  1 <= i <= N;
+          16, 8, 5, 4, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1
+          
+          So we can see there are some segment which give same value's. 
+*/
+
+    // Code : 
+        
+    #include<bits/stdc++.h>
+    using namespace std;
+    #define int long long int
+    const int mod = 1e9 + 7;
+
+    int multiply(int a, int b) {
+        a %= mod, b %= mod;
+        return (a * b) % mod;
+    }
+
+    int add(int a, int b) {
+        a += b;
+        if(a >= mod)
+            return a - mod;
+        return a;
+    }
+
+    int modpow(int a, int b) {
+        if(b == 1)
+            return a % mod;
+        a = a % mod;
+        b = b % (mod - 1);
+        int ans = 1;
+        a %= mod, b %= mod;
+        while(b) {
+            if(b % 2)
+                ans = multiply(ans, a);
+            a = multiply(a, a);
+            b >>= 1;
+        }
+        return ans % mod;
+    }
+    
+    int modinv(int x) {
+        return modpow(x, mod - 2);
+    }
+
+    void go() {
+        int n;
+        cin >> n;
+        auto sumtill = [&](int x) {
+            x %= mod;
+            int sum = multiply(x, x + 1);
+            sum = multiply(sum, modinv(2));
+            return sum % mod;
+        };
+            
+        int ans = 0;
+
+        for(int l = 1; l <= n; ) {
+            int r = n / (n / l);
+            int toAdd = sumtill(r) - sumtill(l - 1);
+            toAdd = multiply(toAdd, n / l);
+            ans += toAdd;
+            l = r + 1;
+        }   
+        cout << ans % mod << "\n";
+    }
+    int32_t main() {
+        go();
+        return 0;
+    }
+    
+        
         
 
