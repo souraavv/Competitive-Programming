@@ -28,3 +28,17 @@ long long inverse[n + 1];
 for (int i = 1; i <= n; i++) {
   inverse[i] = (fact[i - 1] * ifact[i]) % m;
 }
+
+// compute all k^-i up to 0 <= i <= n;
+// BAse case : k^-0 = k^0 = 1;
+// k^-1 = modPow(k, m - 2);
+// For rest k^-i = k^-1 * (k ^ -(i - 1));
+// so if we value of cur = k^-(i - 1)) we can compute k^-i by multiplying k^(-(i - 1)) with k^-1;
+
+long long k_inverse[n + 1];
+k_inverse[0] = 1;
+long long k_inv = mpow(k, m - 2), cur = 1;
+for (int i = 1; i <= n; i++) {
+  cur = (cur * k_inv) % m;
+  k_inverse[i] = cur;
+}
