@@ -45,27 +45,19 @@ void dfs(int u, int par){
             dfs(v, u);
 }
 
-
-
 int lca(int u, int v){
-    
     if(lvl[u] < lvl[v])
         swap(u, v);
-    
     for(int i = 30; ~i; --i)
         if(lvl[u] - (1 << i) >= lvl[v])
             u = dp[u][i];
-    
     if(u == v)
         return u;
-    
     for(int i = 30; ~i; --i)
         if(dp[u][i] ^ dp[v][i])
             u = dp[u][i],v = dp[v][i];
-        
     return dp[u][0];
 }
-
 
 int32_t main()
 {    
