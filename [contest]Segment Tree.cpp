@@ -40,7 +40,7 @@ public:
         n = count;
         data = std::vector<int>(2 * n, 0);
     }
-
+ 
     SegmentTree(std::vector<int> const &values) {
         n = values.size();
         data = std::vector<int>(2 * n);
@@ -48,32 +48,39 @@ public:
         for (int idx = n - 1; idx > 0; idx--)
             data[idx] = opr(data[idx * 2], data[idx * 2 + 1]);
     }
-
-    // write the operation : 
+ 
     int opr(int a, int b) {
-        return 
+        return a + b;
     }
     void update(int idx, int value) {
-        for(data[idx += n] = value; idx > 1; idx >>= 1 ) {
-            data[idx >> 1] = opr(data[idx], data[idx ^ 1]);
+        idx += n;
+        data[idx] += value;
+ 
+        while (idx > 1) {
+            idx /= 2;
+            data[idx] = opr(data[2 * idx], data[2 * idx + 1]);
         }
     }
-
+ 
     int query(int left, int right) { // interval [left, right)
-        int ret = 0; // initialize it accordingly
-        for(left += n, right += n; left < right; left >>= 1, right >>= 1){
-            if (left & 1) 
-              ret = opr(ret, data[left++]);
-            if (right & 1) 
-              ret = opr(ret, data[--right]);
+        int ret = 0;
+        left += n;
+        right += n;
+ 
+        while (left < right) {
+            if (left & 1) ret = opr(ret, data[left++]);
+            if (right & 1) ret = opr(ret, data[--right]);
+            left >>= 1;
+            right >>= 1;
         }
         return ret;
     }
-
+ 
 private:
     int n;
     std::vector<int> data;
 };
+
 
 int32_t main() {
     ios::sync_with_stdio(false);
