@@ -54,7 +54,7 @@ public:
         return 
     }
     void update(int idx, int value) {
-        for(data[idx += n] = value; idx > 1; idx >> = 1 ) {
+        for(data[idx += n] = value; idx > 1; idx >>= 1 ) {
             data[idx >> 1] = opr(data[idx], data[idx ^ 1]);
         }
     }
