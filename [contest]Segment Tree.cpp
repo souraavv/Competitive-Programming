@@ -50,11 +50,11 @@ public:
     }
  
     int opr(int a, int b) {
-        return a + b;
+        return ; // set this accordingly
     }
     void update(int idx, int value) {
         idx += n;
-        data[idx] += value;
+        data[idx] += value; // also look at this whether complete new value of old + new value;
  
         while (idx > 1) {
             idx /= 2;
@@ -63,7 +63,7 @@ public:
     }
  
     int query(int left, int right) { // interval [left, right)
-        int ret = 0;
+        int ret = 0; // Initialize accoring to the range operation
         left += n;
         right += n;
  
