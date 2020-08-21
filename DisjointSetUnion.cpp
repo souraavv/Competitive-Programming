@@ -27,8 +27,3 @@ class UF {
         int n;
         vector<int> e;
 };
-
-/* 
-Sizes are store in negative form and it's impact is in compairson in join also. 
-Only parent of a component store size and all other store their parent node number.
-*/
