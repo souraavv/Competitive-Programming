@@ -1,4 +1,4 @@
-
+// Wrap to class
 class UF {
     public :
         UF(int count) {
