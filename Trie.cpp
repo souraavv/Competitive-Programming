@@ -222,3 +222,187 @@ int queryMinXor(TrieNode* head, int val) {
     return ans;
 }
 
+
+/*
+Range query
+*/
+
+#include <bits/stdc++.h>
+using namespace std;
+ 
+#define IOS ios::sync_with_stdio(0); cin.tie(0); cout.tie(0);
+#define endl "\n"
+ 
+const int N = 3e5 + 5;
+ 
+typedef struct data
+{
+	data* bit[2];
+	int cnt = 0;
+}trie;
+ 
+int n, q, r, key, curRoot=0;
+map<int, trie*> root;
+trie* head;
+ 
+trie* get(trie* node, int b)
+{
+	if(!node || !node->bit[b])
+		return NULL;
+	return node->bit[b];
+}
+ 
+int getCnt(trie* node)
+{
+	if(!node)
+		return 0;
+	return node->cnt;
+}
+ 
+void addNew(trie* old, trie* cur, int val, int i=20)
+{
+	cur->cnt = getCnt(old) + 1;
+	if(i < 0)
+		return;
+	int b = val>>i & 1;
+	cur->bit[b] = new trie();
+	addNew(get(old, b), cur->bit[b], val, i-1);
+	cur->bit[!b] = get(old, !b);
+}
+ 
+void add(int par, int u, int val)
+{
+	trie* cur = new trie();
+	addNew(root[par], cur, val, 20);
+	root[u] = cur;
+}
+ 
+int minXor(trie* cur, int x, int i)
+{
+	if(i < 0)
+		return 0;
+	int b = x>>i & 1;
+	if(cur->bit[b] && cur->bit[b]->cnt>0)
+		return minXor(cur->bit[b], x, i-1);
+	else
+		return (1LL<<i) + minXor(cur->bit[!b], x, i-1);
+}	
+ 
+int maxXor(trie* cur, int x, int i)
+{
+	if(i < 0)
+		return 0;
+	int b = x>>i & 1;
+	if(cur->bit[!b] && cur->bit[!b]->cnt>0)
+		return (1LL<<i) + maxXor(cur->bit[!b], x, i-1);
+	else
+		return maxXor(cur->bit[b], x, i-1);
+}	
+ 
+int getMaxXor(trie* L, trie* R, int x, int i=20)
+{
+	if(i < 0)
+		return 0;
+	int b = x>>i & 1;
+	int have = getCnt(get(R, !b)) - getCnt(get(L, !b));
+	if(have > 0)
+		return (1LL<<i) | getMaxXor(get(L, !b), get(R, !b), x, i-1);
+	else
+		return getMaxXor(get(L, b), get(R, b), x, i-1);
+}
+ 
+int getMax(trie* L, trie* R, int x, int i=20)
+{
+	if(i < 0)
+		return 0;
+	int b = x>>i & 1;
+	int have = getCnt(get(R, !b)) - getCnt(get(L, !b));
+	if(have > 0)
+		return ((!b)<<i) | getMax(get(L, !b), get(R, !b), x, i-1);
+	else
+		return b<<i | getMax(get(L, b), get(R, b), x, i-1);
+}
+ 
+int getLeq(trie* L, trie* R, int x, int i=20)
+{	
+	if(i < 0)
+		return getCnt(R) - getCnt(L);
+	int b = x>>i & 1;
+	int ans = 0;
+	if(b)
+		ans += getCnt(get(R, 0)) - getCnt(get(L, 0));
+	return ans + getLeq(get(L, b), get(R, b), x, i-1);
+}
+ 
+int getKth(trie* L, trie* R, int k, int i)
+{
+	if(i < 0)
+		return 0;
+	int have = getCnt(get(R, 0)) - getCnt(get(L, 0));
+	if(have >= k)
+		return getKth(get(L, 0), get(R, 0), k, i-1);
+	else
+		return (1LL<<i) + getKth(get(L, 1), get(R, 1), k-have, i-1);
+}
+ 
+void Q0(int x)
+{
+	add(curRoot, curRoot+1, x);
+	curRoot++;
+}
+ 
+void Q1(int l, int r, int x)
+{
+	cout<<getMax(root[l-1], root[r], x, 20)<<endl;
+}
+ 
+void Q2(int k)
+{
+	curRoot-=k;
+}
+ 
+void Q3(int l, int r, int x)
+{
+	cout<<getLeq(root[l-1], root[r], x, 20)<<endl;
+}
+ 
+void Q4(int l, int r, int k)
+{
+	cout<<getKth(root[l-1], root[r], k, 20)<<endl;
+}
+ 
+int32_t main()
+{
+	IOS;
+	root[0] = new trie();
+	int q;
+	cin>>q;
+	while(q--)
+	{
+		int type, l, r, x;
+		cin>>type;
+		if(type==0)
+			cin>>x, Q0(x);
+		else if(type==1)
+			cin>>l>>r>>x, Q1(l, r, x);
+		else if(type==2)
+			cin>>x, Q2(x);
+		else if(type==3)
+			cin>>l>>r>>x, Q3(l, r, x);
+		else
+			cin>>l>>r>>x, Q4(l, r, x);
+	}
+	return 0;
+}
+
+/*
+Given an initially empty integer array (1-indexed) and some queries:
+
+Type 0: Add the integer number x at the end of the array.
+Type 1: On the interval L..R find a number y, to maximize (x xor y).
+Type 2: Delete last k numbers in the array
+Type 3: On the interval L..R, count the number of integers less than or equal to x.
+Type 4: On the interval L..R, find the kth smallest integer (kth order statistic).
+
+*/
+ 
