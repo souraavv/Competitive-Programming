@@ -126,3 +126,99 @@ int query(Trie* head, int val, int k) {
     ans += itr->cnt;
     return ans;
 }
+
+// pref is used, becasue each query if updating original array, with xoring each element with some value k, then pref = k1 ^ k2 ...
+// It is not require in general then you can set pref = 0 and It will behave normal 
+int queryLessThanK(TrieNode* head, int K, int pref = 0) {
+    TrieNode* itr = head;
+    int ans = 0;
+    for (int i = 30; i >= 0; --i) {
+        int curK = (K >> i) & 1;
+        int curPref = (pref >> i) & 1;
+        if (curK) {
+            if (curPref) {
+                if (itr->arr[curPref] != NULL) {
+                    ans += itr->arr[curPref]->cnt;
+                }
+                if (itr->arr[curPref ^ 1] != NULL) {
+                    itr = itr->arr[curPref ^ 1];
+                }
+                else {
+                    return ans;
+                }
+            }
+            else {
+                if (itr->arr[curPref] != NULL) {
+                    ans += itr->arr[curPref]->cnt;
+                }
+                if (itr->arr[1 ^ curPref] != NULL) {
+                    itr = itr->arr[1 ^ curPref];
+                }
+                else {
+                    return ans;
+                }
+            }
+        }
+        else {
+            // if curbit is not set.
+            // then I also need to pick 0.
+            if (itr->arr[curPref] != NULL) {
+                itr = itr->arr[curPref];
+            }
+            else {
+                return ans;
+            }
+        }
+    }
+    ans += itr->cnt;
+    return ans;
+}
+ 
+bool exist(TrieNode* head, int val) {   
+    TrieNode* itr = head;
+    for (int i = 30; i >= 0; --i) {
+        int curBit = (val >> i) & 1;
+        if (itr->arr[curBit]) {
+            itr = itr->arr[curBit];
+        }
+        else {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+int queryMaxXor(TrieNode* head, int val) {
+    TrieNode* itr = head;
+    int ans = 0;
+    for (int i = 30; i >= 0; --i) {
+        int curBit = (val >> i) & 1;
+        if (itr->arr[1 ^ curBit] != NULL && itr->arr[1 ^ curBit]->cnt > 0) {
+            itr = itr->arr[1 ^ curBit];
+            ans += (1LL << i);
+        }
+        else {
+            itr = itr->arr[curBit];
+        }
+    }    
+    return ans;
+}
+
+
+int queryMinXor(TrieNode* head, int val) {
+    TrieNode* itr = head;
+    int ans = 0;
+    for (int i = 30; i >= 0; --i) {
+        int curBit = (val >> i) & 1;
+        if (itr->arr[curBit] != NULL && itr->arr[curBit]->cnt > 0) {
+            itr = itr->arr[curBit];
+        }
+        else {
+            ans += (1LL << i);
+            itr = itr->arr[curBit^1];
+        }
+    }    
+    return ans;
+}
+
