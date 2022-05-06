@@ -70,6 +70,34 @@
                              
     
     Good Problem: https://www.codechef.com/problems/ENGXOR
-    
-    
+   
+*/
+
+
+
+
+/*
+
+To cover all the boundary of a given grid (by joining them using edge)
+
+ 0   1   2   3
+ 4   5   6   7
+ 8   9  10  11
+12  13  14  15
+
+
+for all i in range (0, n - 2)
+
+i -> (i + 1)            run on row = 0 [Very trivial] pattern like (0->1, 1->2, ..)
+
+i * n -> (i + 1) * n    run on column = 0 [very trivial pattern of direct multiple of 4, like 0->4, 4->8)
+
+(i + 1) * n - 1  to (i + 2) * n - 1  run on last column (n - 1) [pattern if used +1, then get perfect multiple of n) [(4 - 1) -> (8 - 1) so on)
+
+how many number of element you need to eat to reach last row ? (n) * (n - 1)
+what if I add i to this won't it be adding edges 
+so n(n - 1) + i -> n(n - 1) + i + 1   
+
+
+
 */
