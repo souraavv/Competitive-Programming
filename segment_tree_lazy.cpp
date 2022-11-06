@@ -33,7 +33,11 @@ void print2D(vvi& a) {
 struct node {
     // any attributes you want
     int mn;
-    node() : mn(inf) {};
+    // int val, mx, xr;
+    node() : mn(inf) {}; // for min
+    // node() : mx(-inf) {}; // for max
+    // node() : xr(0) {}: // for xor
+    // node() : val(0) {}; // for sum
 };
 
 /*
@@ -60,6 +64,7 @@ struct SegmentTree {
     // change accordingly
     void merge(node& cur, node& left, node& right) {
         cur.mn = std::min(left.mn, right.mn);
+	// cur.val = left.val + right.val;
     }
     
     void build(int u, int left, int right) {
@@ -72,6 +77,16 @@ struct SegmentTree {
         build(2 * u + 1, mid + 1, right);
         merge(st[u], st[2 * u], st[2 * u + 1]);
     }
+	
+    void build(int u, int left, int right, vector<int>& values) {
+	    if (left == right) {
+		    st[u].mn = values[left];
+	    }
+	    int mid = (left + right) / 2;
+	    build (2 * u, left, mid, values);
+	    build (2 * u + 1, mid + 1, right, values);
+	    merge(st[u], st[2 * u], st[2 * u + 1]);
+    }
     // handle lazy prop.
     void propagate(int u, int left, int right) {
         if (left != right) {
@@ -79,7 +94,17 @@ struct SegmentTree {
             lazy[2 * u] = lazy[u];
             lazy[2 * u + 1] = lazy[u];
         }
-        st[u].mn = lazy[u];// update, it depends on operation
+	// NOTE: st[u].mn
+	// This is imp, this will surely 
+	// update so +=, *=, min, max, xor
+	// st[u].val = (Right - left + 1) * val;
+	// and in case of range it contain
+	// for xor it will be based on odd/even count
+	// for sum it will right - left + 1 * val;
+	// same for the product
+	// for max and min it it simple
+        st[u].mn = lazy[u];
+	lazy[u] = 0;
         clazy[u] = false;
     }
     // handle point-query
@@ -180,7 +205,11 @@ int32_t main(){
     
     int n = 5;
     SegmentTree st(n);
-
+	// it is assuming 1-based, since 1, N is passed, 
+	// to make it 0 based we can pass 0, n - 1. in all the prefix
+	// 1, 1, N, 
+	// 1 is the node number in segment tree and 1, N is the range it contains
+	// so it can be 1, N or [0, N - 1] 
     for (int i = 0; i < n; ++i) {
         int val;
         cin >> val;
