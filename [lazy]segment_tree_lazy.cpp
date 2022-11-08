@@ -18,16 +18,6 @@ void logger(string vars, Args&&... values) {
     cout << "]\n";
 }
 
-void print(vi &a, int start = 0) {
-    int n = a.size();
-    for(int i = start; i < n; ++i) cerr << a[i] << ' ';
-    cerr << "\n";
-}
-
-void print2D(vvi& a) {
-    int n = a.size();
-    for (int i = 0; i < n; ++i) print(a[i]);
-}
 
 
 struct node {
@@ -84,6 +74,7 @@ struct SegmentTree {
 	    if (left == right) {
 		    // NOTE: u and left, u is node number, left is in the index in values.
 		    st[u].mn = values[left];
+            return;
 	    }
 	    int mid = (left + right) / 2;
 	    build (2 * u, left, mid, values);
@@ -107,7 +98,7 @@ struct SegmentTree {
 	// same for the product
 	// for max and min it it simple
         st[u].mn = lazy[u];
-	lazy[u] = 0;
+	    lazy[u] = 0;
         clazy[u] = false;
     }
     // handle point-query
@@ -187,10 +178,10 @@ struct SegmentTree {
     }
 
     void bulid() {
-	build(1, 0, n - 1);
+	    build(1, 0, N - 1);
     }
     void build(vector<int>& values) {
-	build(1, 0, n - 1, values);
+        build(1, 0, N - 1, values);
     }
     // over-loading
     node query(int pos) {
@@ -208,7 +199,6 @@ struct SegmentTree {
     }
 };
 
-
 int32_t main(){
 	ios::sync_with_stdio(0);
 	cin.tie(0);
@@ -220,5 +210,7 @@ int32_t main(){
 		scanf("%lld", &values[i]);
 	}
 	st.build(values);
+    // node ans = st.query(3, 3);
+    cout << ans.mn << '\n';
 	return 0;
 }
