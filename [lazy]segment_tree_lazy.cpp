@@ -31,6 +31,7 @@ struct node {
 };
 
 /*
+
  * sum ? 
  * xor ? 
  * min ? true
