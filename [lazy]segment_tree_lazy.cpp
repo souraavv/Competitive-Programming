@@ -69,6 +69,8 @@ struct SegmentTree {
     
     void build(int u, int left, int right) {
         if (left == right) {
+	    // note st is udpating u values (which is node idx, and left/right
+	    // is the index from the array which we are updating.
             st[u].mn = inf; // set some default value
             return;
         }
@@ -80,6 +82,7 @@ struct SegmentTree {
 	
     void build(int u, int left, int right, vector<int>& values) {
 	    if (left == right) {
+		    // NOTE: u and left, u is node number, left is in the index in values.
 		    st[u].mn = values[left];
 	    }
 	    int mid = (left + right) / 2;
@@ -143,17 +146,18 @@ struct SegmentTree {
     }
     // point-update
     void point_update(int u, int left, int right, int pos, int val) {
-        if (clazy[u]) {
-            // if needed already do that.
+        // propagate...
+	if (clazy[u]) {
             propagate(u, left, right);
         }
+	// If can make lazy, make it & range is within boundary.
         if (left == right) {
             // ok this is the node, which I'm looking set and propagate.
             clazy[u] = true;
             lazy[u] = val;
             propagate(u, left, right);
             return;
-        }
+	}
         int mid = (left + right) / 2;
         if (pos <= mid) {
             point_update(2 * u, left, mid, pos, val);
@@ -182,19 +186,25 @@ struct SegmentTree {
         merge(st[u], st[2 * u], st[2 * u + 1]);
     }
 
+    void bulid() {
+	build(1, 0, n - 1);
+    }
+    void build(vector<int>& values) {
+	build(1, 0, n - 1, values);
+    }
     // over-loading
     node query(int pos) {
-        return point_query(1, 1, N, pos);
+        return point_query(1, 0, N - 1, pos);
     }
     node query(int left, int right) {
-        return range_query(1, 1, N, left, right);
+        return range_query(1, 0, N - 1, left, right);
     }
     // for update
     void update(int pos, int val) {
-        point_update(1, 1, N, pos, val);
+        point_update(1, 0, N - 1, pos, val);
     }
     void update(int left, int right, int val) {
-        range_update(1, 1, N, left, right, val);
+        range_update(1, 0, N - 1, left, right, val);
     }
 };
 
@@ -203,22 +213,12 @@ int32_t main(){
 	ios::sync_with_stdio(0);
 	cin.tie(0);
     
-    int n = 5;
-    SegmentTree st(n);
-	// it is assuming 1-based, since 1, N is passed, 
-	// to make it 0 based we can pass 0, n - 1. in all the prefix
-	// 1, 1, N, 
-	// 1 is the node number in segment tree and 1, N is the range it contains
-	// so it can be 1, N or [0, N - 1] 
-    for (int i = 0; i < n; ++i) {
-        int val;
-        cin >> val;
-        st.update(i, val);
-    }
-
-    for (int i = 0; i < n; ++i) {
-        
-    }
-
+	int n = 5;
+	SegmentTree st(n); // 0-based indexing, ensure because 0, n - 1 is the range node 1 contains.
+	vector<int> values(n);
+	for (int i = 0; i < n; ++i) {
+		scanf("%lld", &values[i]);
+	}
+	st.build(values);
 	return 0;
 }
