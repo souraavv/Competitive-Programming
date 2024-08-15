@@ -1,4 +1,8 @@
-// Wrap to class
+/*
+ * e[x] - Captures two information at the same time based on the sign (< 0) or (>= 0)
+ *   - if e[x] < 0 : Then x represent the parent of a component and -e[x] represent the size of the component
+ *   - if e[x] >= 0 : x is a part of some component and x is not root in that component; where e[x] is the parent of x
+ */
 class UF {
     public :
         UF(int count) {
